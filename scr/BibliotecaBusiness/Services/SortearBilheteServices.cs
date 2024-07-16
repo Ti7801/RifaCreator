@@ -1,17 +1,32 @@
-﻿namespace BibliotecaBusiness.Services
+﻿using BibliotecaBusiness.Abstractions;
+using BibliotecaBusiness.Models;
+
+namespace BibliotecaBusiness.Services
 {
     public class SortearBilheteServices
     {
-        /*           
-        public Bilhete? SortearBilhete(List<Bilhete> bilhetes)
+        private readonly IBilheteRepository bilheteRepository;
+
+        public SortearBilheteServices(IBilheteRepository bilheteRepository)
         {
-            Random rnd = new Random();
-            var idBilhete = rnd.Next(0, bilhetes.Count);
-
-            var bilheteAleatorio = appDbContext.Bilhetes.Where(x => x.Id == idBilhete).SingleOrDefault();
-
-            return bilheteAleatorio;
+            this.bilheteRepository = bilheteRepository;
         }
-        */
+
+        public void SortearBilhete(List<Bilhete> bilhetes)
+        {
+            ServiceResult serviceResult = new ServiceResult();
+
+            try 
+            {
+                bilheteRepository.SorteioBilhete(bilhetes);
+                serviceResult.Success = true;
+            }
+            catch (Exception e) 
+            {
+                serviceResult.Success = false;
+                serviceResult.Erros.Add(e.Message);
+            }
+        }
+
     }
 }

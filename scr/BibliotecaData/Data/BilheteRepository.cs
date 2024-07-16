@@ -44,12 +44,26 @@ namespace BibliotecaData.Data
             return bilhete;
         }
 
+        public Bilhete SorteioBilhete(List<Bilhete> bilhetes)
+        {
+            Random rnd = new Random();
+            var idBilhete = rnd.Next(0, bilhetes.Count);
+
+            var bilheteAleatorio = ObterBilhetePorId(idBilhete);
+
+            if (bilheteAleatorio == null)
+            {
+                const string message = "Identificação do bilhete não encontrado.";
+                throw new BilheteNaoEncontradoException(message);
+            }
+
+            return bilheteAleatorio;
+        }
+
         public void ExcluirBilhete(Bilhete bilhete)
         {
             appDbContext.Bilhetes.Remove(bilhete);
             appDbContext.SaveChanges();
         }
-
-
     }
 }

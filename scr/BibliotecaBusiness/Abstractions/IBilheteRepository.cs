@@ -8,5 +8,6 @@ namespace BibliotecaBusiness.Abstractions
         public Bilhete? ObterBilhetePorId(long id);
         public void AtualizaBilhete(Bilhete bilhete);
         public void ExcluirBilhete(Bilhete bilhete);
+        public Bilhete SorteioBilhete(List<Bilhete> bilhetes);
     }
 }
