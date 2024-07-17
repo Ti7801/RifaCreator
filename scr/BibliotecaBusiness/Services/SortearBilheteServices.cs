@@ -12,21 +12,11 @@ namespace BibliotecaBusiness.Services
             this.bilheteRepository = bilheteRepository;
         }
 
-        public void SortearBilhete(List<Bilhete> bilhetes)
+        public Bilhete? SortearBilhete(List<Bilhete> bilhetes)
         {
-            ServiceResult serviceResult = new ServiceResult();
-
-            try 
-            {
-                bilheteRepository.SorteioBilhete(bilhetes);
-                serviceResult.Success = true;
-            }
-            catch (Exception e) 
-            {
-                serviceResult.Success = false;
-                serviceResult.Erros.Add(e.Message);
-            }
+            Bilhete? bilhete = bilheteRepository.SorteioBilhete(bilhetes);
+                
+            return bilhete; 
         }
-
     }
 }

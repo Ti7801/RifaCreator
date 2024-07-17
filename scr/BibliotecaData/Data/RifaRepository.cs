@@ -43,7 +43,7 @@ namespace BibliotecaData.Data
             return rifaretorno;
         }
 
-        public string? StatusRifa(long id)
+        public string? ObterStatusRifa(long id)
         {
             Rifa? rifa = ObterRifa(id);
 

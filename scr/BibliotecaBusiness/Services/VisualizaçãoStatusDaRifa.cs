@@ -12,22 +12,11 @@ namespace BibliotecaBusiness.Services
             this.rifaRepository = rifaRepository;
         }
 
-        public ServiceResult VisualizarStatusRifa(long id)
-        {
-            ServiceResult serviceResult = new ServiceResult();
+        public string? StatusRifa(long id)
+        {        
+            string? status =  rifaRepository.ObterStatusRifa(id);
 
-            try
-            {
-                rifaRepository.StatusRifa(id);
-                serviceResult.Success = true;
-            }
-            catch (Exception e) 
-            {
-                serviceResult.Success = false;
-                serviceResult.Erros.Add(e.Message);
-            }
-
-            return serviceResult;
+            return status;
         }
     }
 }
