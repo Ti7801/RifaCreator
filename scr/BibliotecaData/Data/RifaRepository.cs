@@ -38,9 +38,22 @@ namespace BibliotecaData.Data
 
         public Rifa? ObterRifa(long id)
         {
-            var rifaretorno = appDbContext.Rifas.Where(rifa => rifa.Id == id).SingleOrDefault();
+            Rifa? rifaretorno = appDbContext.Rifas.Where(rifa => rifa.Id == id).SingleOrDefault();
 
             return rifaretorno;
+        }
+
+        public string? StatusRifa(long id)
+        {
+            Rifa? rifa = ObterRifa(id);
+
+            if (rifa == null)
+            {
+                const string message = "Identificação da rifa não encontrada.";
+                throw new RifaNaoEncontradaException(message);
+            }
+
+            return rifa.Status;
         }
 
         public void ExcluirRifa(Rifa rifa)

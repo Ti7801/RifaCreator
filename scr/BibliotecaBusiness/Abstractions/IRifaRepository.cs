@@ -8,5 +8,6 @@ namespace BibliotecaBusiness.Abstractions
         public Rifa? ObterRifa(long id);
         public void AtualizarRifa(Rifa rifa);
         public void ExcluirRifa(Rifa rifa);
+        public string? StatusRifa(long id);
     }
 }
