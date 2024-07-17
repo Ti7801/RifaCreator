@@ -3,11 +3,11 @@ using BibliotecaBusiness.Models;
 
 namespace BibliotecaBusiness.Services
 {
-    public class AtualizarBilheteServices
+    public class AtualizarBilheteService
     {
         private readonly IBilheteRepository bilheteRepository;
 
-        public AtualizarBilheteServices(IBilheteRepository bilheteRepository)
+        public AtualizarBilheteService(IBilheteRepository bilheteRepository)
         {
             this.bilheteRepository = bilheteRepository;
         }

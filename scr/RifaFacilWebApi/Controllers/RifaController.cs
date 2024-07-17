@@ -10,9 +10,9 @@ namespace RifaFacilWebApi.Controllers
     [Route("rifa")]
     public class RifaController : ControllerBase
     {
-        private readonly CadastrarRifaServices cadastrarRifaServices;
+        private readonly CadastrarRifaService cadastrarRifaServices;
 
-        public RifaController(CadastrarRifaServices cadastrarRifaServices)
+        public RifaController(CadastrarRifaService cadastrarRifaServices)
         {
             this.cadastrarRifaServices = cadastrarRifaServices;
         }
@@ -36,6 +36,43 @@ namespace RifaFacilWebApi.Controllers
             }
 
             return CreatedAtAction(nameof(CadastrarRifa), rifa);
-        } 
+        }
+
+        [HttpGet]
+        [ProducesResponseType(typeof(Rifa), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult<Rifa> ObterRifa()
+        {
+
+
+            return new Rifa();
+        }
+
+        [HttpPut]
+        [ProducesResponseType(typeof(Rifa), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult<Rifa> AtualizarRifa()
+        {
+            if (!ModelState.IsValid)
+            {
+                var erros = ModelState.Values.SelectMany(u => u.Errors).Select(error => error.ErrorMessage);
+                return BadRequest(erros);
+            }
+
+
+            return new Rifa();
+        }
+
+        [HttpDelete]
+        [ProducesResponseType(typeof(Rifa), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult<Rifa> ExcluirRifa()
+        {
+
+
+            return new Rifa();
+        }
+
+
     }
 }

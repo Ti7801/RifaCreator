@@ -3,11 +3,11 @@ using BibliotecaBusiness.Models;
 
 namespace BibliotecaBusiness.Services
 {
-    public class CriarContaServices
+    public class CriarContaService
     {
         private readonly IRifadorRepository rifadorRepository;
 
-        public CriarContaServices(IRifadorRepository rifadorRepository)
+        public CriarContaService(IRifadorRepository rifadorRepository)
         {
             this.rifadorRepository = rifadorRepository;
         }

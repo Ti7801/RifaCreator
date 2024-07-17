@@ -3,11 +3,11 @@ using BibliotecaBusiness.Models;
 
 namespace BibliotecaBusiness.Services
 {
-    public class CadastrarRifaServices
+    public class CadastrarRifaService
     {
         private readonly IRifaRepository rifaRepository;
 
-        public CadastrarRifaServices(IRifaRepository rifaRepository)
+        public CadastrarRifaService(IRifaRepository rifaRepository)
         {
             this.rifaRepository = rifaRepository;
         }

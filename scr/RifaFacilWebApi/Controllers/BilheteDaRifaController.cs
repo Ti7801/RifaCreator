@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using BibliotecaBusiness.Models;
 using BibliotecaData.Data;
 using BibliotecaBusiness.Services;
+using BibliotecaBusiness.Abstractions;
 
 namespace RifaFacilWebApi.Controllers
 {
@@ -10,12 +11,13 @@ namespace RifaFacilWebApi.Controllers
     [Route("controller")]
     public class BilheteDaRifaController : ControllerBase
     {
-        private readonly AppDbContext appDbContext;
-            
-        public BilheteDaRifaController(AppDbContext appDbContext)
-        {
-            this.appDbContext = appDbContext;
+        private readonly ConsultarBilheteService consultarBilheteService;
+
+        public BilheteDaRifaController(ConsultarBilheteService consultarBilhete) 
+        { 
+            this.consultarBilheteService = consultarBilhete;
         }
+
 
         [HttpPost]
         [ProducesResponseType(typeof(Bilhete), StatusCodes.Status200OK)]
@@ -37,37 +39,25 @@ namespace RifaFacilWebApi.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(Bilhete), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<List<Bilhete>> ListarBilhetes()
+        public ActionResult<Bilhete> ObterBilhete(long id)
         {
-            var lista = appDbContext.Bilhetes;
+            Bilhete bilhete = consultarBilheteService.ConsultarBilhete(id);
 
-            if (lista == null)
-            {
-                return NotFound();
-            }
 
-            return Ok(lista);
+            return bilhete;
         }
 
-        [HttpGet("sortear")]
+        [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<Bilhete> Sortear()
         {
-            Random aleatorio = new Random();
 
-            var inicio = appDbContext.Bilhetes.OrderBy(x => x.Id).FirstOrDefault();
-            var fim = appDbContext.Bilhetes.OrderBy(x => x.Id).LastOrDefault();
-            var valorEscolhido = aleatorio.NextInt64(inicio.Id, fim.Id);
 
-            var escolhido = appDbContext.Bilhetes.Where(u => u.Id == valorEscolhido).SingleOrDefault();
 
-            if (escolhido == null)
-            {
-                return NotFound();
-            }
 
-            return Ok(escolhido);
+
+            return Ok();
         }
 
         [HttpPut]
@@ -77,7 +67,7 @@ namespace RifaFacilWebApi.Controllers
         {
                 
 
-            return Ok(bilhetePesquisado);
+            return Ok();
         }
 
 
@@ -86,17 +76,10 @@ namespace RifaFacilWebApi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<Bilhete> DeletarBilhete(Bilhete bilhete)
         {
-            var removerBilhete = appDbContext.Bilhetes.Where(u => u.Id == bilhete.Id).SingleOrDefault();
+           
+            
 
-            if (removerBilhete == null)
-            {
-                return NotFound();
-            }
-
-            appDbContext.Bilhetes.Remove(removerBilhete);
-            appDbContext.SaveChanges();
-
-            return Ok(removerBilhete);
+            return Ok();
         }
     }
     

@@ -1,6 +1,6 @@
 ﻿namespace BibliotecaBusiness.Services
 {
-    public class ComprarBilheteServices
+    public class ComprarBilheteService
     {
     }
 }

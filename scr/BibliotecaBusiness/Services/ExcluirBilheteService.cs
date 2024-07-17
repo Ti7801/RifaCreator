@@ -3,11 +3,11 @@ using BibliotecaBusiness.Models;
 
 namespace BibliotecaBusiness.Services
 {
-    public class ExcluirBilheteServices
+    public class ExcluirBilheteService
     {
         private readonly IBilheteRepository bilheteRepository;
 
-        public ExcluirBilheteServices(IBilheteRepository bilheteRepository)
+        public ExcluirBilheteService(IBilheteRepository bilheteRepository)
         {
             this.bilheteRepository = bilheteRepository;
         }

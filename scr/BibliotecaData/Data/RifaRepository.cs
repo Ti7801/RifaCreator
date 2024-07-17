@@ -26,8 +26,8 @@ namespace BibliotecaData.Data
 
             if (rifaPesquisada == null)
             {
-                const string message = "A identificação de rifa não foi encontrada.";
-                throw new RifaNaoEncontradaException(message);
+                const string message = "Identificação da rifa não encontrada";
+                throw new RifadorNaoEncontradoException(message);
             }
 
             rifaPesquisada.Status = rifa.Status;
@@ -43,24 +43,10 @@ namespace BibliotecaData.Data
             return rifaretorno;
         }
 
-        public string? ObterStatusRifa(long id)
-        {
-            Rifa? rifa = ObterRifa(id);
-
-            if (rifa == null)
-            {
-                const string message = "Identificação da rifa não encontrada.";
-                throw new RifaNaoEncontradaException(message);
-            }
-
-            return rifa.Status;
-        }
-
         public void ExcluirRifa(Rifa rifa)
         {
             appDbContext.Rifas.Remove(rifa);    
             appDbContext.SaveChanges();
         }
-
     }
 }
