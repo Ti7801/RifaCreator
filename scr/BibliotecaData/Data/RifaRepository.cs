@@ -22,13 +22,7 @@ namespace BibliotecaData.Data
 
         public void AtualizarRifa(Rifa rifa)
         {
-            Rifa? rifaPesquisada = ObterRifa(rifa.Id);
-
-            if (rifaPesquisada == null)
-            {
-                const string message = "Identificação da rifa não encontrada";
-                throw new RifadorNaoEncontradoException(message);
-            }
+            Rifa rifaPesquisada = ObterRifa(rifa.Id);
 
             rifaPesquisada.Status = rifa.Status;
 
@@ -36,9 +30,15 @@ namespace BibliotecaData.Data
             appDbContext.SaveChanges();
         }
 
-        public Rifa? ObterRifa(long id)
+        public Rifa ObterRifa(long id)
         {
             Rifa? rifaretorno = appDbContext.Rifas.Where(rifa => rifa.Id == id).SingleOrDefault();
+
+            if (rifaretorno == null)
+            {
+                const string message = "Identificação da rifa não encontrada";
+                throw new RifadorNaoEncontradoException(message);
+            }
 
             return rifaretorno;
         }

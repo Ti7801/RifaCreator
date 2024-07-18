@@ -14,9 +14,14 @@ namespace BibliotecaBusiness.Services
 
         public Bilhete? ConsultarBilhete(long id)
         {
-            Bilhete? bilhetePesquisado = bilheteRepository.ObterBilhetePorId(id);
-              
-            return bilhetePesquisado;
+            try
+            {
+                return bilheteRepository.ObterBilhetePorId(id);
+            }
+            catch
+            {
+                return null;
+            }                                      
         }
     }
 }

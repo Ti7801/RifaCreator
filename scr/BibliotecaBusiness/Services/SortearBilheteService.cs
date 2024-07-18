@@ -14,9 +14,7 @@ namespace BibliotecaBusiness.Services
 
         public Bilhete? SortearBilhete(List<Bilhete> bilhetes)
         {
-            Bilhete? bilhete = bilheteRepository.SorteioBilhete(bilhetes);
-                
-            return bilhete; 
+            return bilheteRepository.SorteioBilhete(bilhetes);                             
         }
     }
 }
