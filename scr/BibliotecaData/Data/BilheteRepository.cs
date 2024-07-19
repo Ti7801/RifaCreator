@@ -21,7 +21,13 @@ namespace BibliotecaData.Data
 
         public void AtualizaBilhete(Bilhete bilhete)
         {
-            Bilhete bilhetePesquisado = ObterBilhetePorId(bilhete.Id);
+            Bilhete? bilhetePesquisado = ObterBilhetePorId(bilhete.Id);
+
+            if (bilhetePesquisado == null)
+            {
+                const string message = "Identificação do bilhete não encontrada";
+                throw new BilheteNaoEncontradoException(message);
+            }
 
             bilhetePesquisado.Nome = bilhete.Nome;
             bilhetePesquisado.Telefone = bilhete.Telefone;
@@ -31,27 +37,11 @@ namespace BibliotecaData.Data
             appDbContext.SaveChanges();
         }
 
-        public Bilhete ObterBilhetePorId(long id)
+        public Bilhete? ObterBilhetePorId(long id)
         {
             Bilhete? bilhete = appDbContext.Bilhetes.Where(x => x.Id == id).SingleOrDefault();
 
-            if (bilhete == null)
-            {
-                const string message = "Identificação do bilhete não encontrada";
-                throw new BilheteNaoEncontradoException(message);
-            }
-
             return bilhete;
-        }
-
-        public Bilhete SorteioBilhete(List<Bilhete> bilhetes)
-        {
-            Random rnd = new Random();
-            var idBilhete = rnd.Next(0, bilhetes.Count);
-
-            Bilhete bilheteAleatorio = ObterBilhetePorId(idBilhete);
-
-            return bilheteAleatorio;
         }
 
         public void ExcluirBilhete(Bilhete bilhete)

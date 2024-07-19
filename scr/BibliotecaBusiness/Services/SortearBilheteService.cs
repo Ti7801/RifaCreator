@@ -1,4 +1,5 @@
 ﻿using BibliotecaBusiness.Abstractions;
+using BibliotecaBusiness.Exceptions;
 using BibliotecaBusiness.Models;
 
 namespace BibliotecaBusiness.Services
@@ -12,9 +13,19 @@ namespace BibliotecaBusiness.Services
             this.bilheteRepository = bilheteRepository;
         }
 
-        public Bilhete? SortearBilhete(List<Bilhete> bilhetes)
+        public Bilhete? SorteioBilhete(List<Bilhete> bilhetes)
         {
-            return bilheteRepository.SorteioBilhete(bilhetes);                             
+            Random rnd = new Random();
+            var idBilhete = rnd.Next(0, bilhetes.Count);
+
+            Bilhete? bilheteAleatorio = bilheteRepository.ObterBilhetePorId(idBilhete);
+
+            if (bilheteAleatorio == null)
+            {
+                return null;
+            }
+
+            return bilheteAleatorio;
         }
     }
 }
