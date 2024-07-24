@@ -13,19 +13,21 @@ namespace BibliotecaBusiness.Services
             this.bilheteRepository = bilheteRepository;
         }
 
-        public Bilhete? SorteioBilhete(List<Bilhete> bilhetes)
+        public Bilhete? SorteioBilhete()
         {
+            List<Bilhete> bilheteAleatorio = bilheteRepository.ListaDeBilhetes() ;
+
             Random rnd = new Random();
-            var idBilhete = rnd.Next(0, bilhetes.Count);
+            var idBilhete = rnd.Next(0, bilheteAleatorio.Count);
 
-            Bilhete? bilheteAleatorio = bilheteRepository.ObterBilhetePorId(idBilhete);
-
-            if (bilheteAleatorio == null)
+            Bilhete? bilheteEscolhido = bilheteAleatorio.Where(x => x.Id == idBilhete).SingleOrDefault();
+         
+            if (bilheteEscolhido == null)
             {
                 return null;
             }
 
-            return bilheteAleatorio;
+            return bilheteEscolhido;
         }
     }
 }

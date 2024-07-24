@@ -12,13 +12,18 @@ namespace RifaFacilWebApi.Controllers
     public class BilheteDaRifaController : ControllerBase
     {
         private readonly ConsultarBilheteService consultarBilheteService;
+        private readonly SortearBilheteService sortearBilheteService;
+        private readonly AtualizarBilheteService atualizarBilheteService;   
 
-        public BilheteDaRifaController(ConsultarBilheteService consultarBilhete) 
+        public BilheteDaRifaController(ConsultarBilheteService consultarBilhete, 
+                                       SortearBilheteService sortearBilheteService, 
+                                       AtualizarBilheteService atualizarBilheteService) 
         { 
             this.consultarBilheteService = consultarBilhete;
+            this.sortearBilheteService = sortearBilheteService;
+            this.atualizarBilheteService = atualizarBilheteService;
         }
-
-
+        // COMPRAR BILHETE
         [HttpPost]
         [ProducesResponseType(typeof(Bilhete), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -36,28 +41,35 @@ namespace RifaFacilWebApi.Controllers
         }
 
 
-        [HttpGet]
+        [HttpGet("{id}")]
         [ProducesResponseType(typeof(Bilhete), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+
         public ActionResult<Bilhete> ObterBilhete(long id)
         {
-            Bilhete bilhete = consultarBilheteService.ConsultarBilhete(id);
+            Bilhete? bilhete = consultarBilheteService.ConsultarBilhete(id);
 
+            if (bilhete == null)
+            {
+                NotFound();
+            }
 
-            return bilhete;
+            return Ok(bilhete);
         }
 
-        [HttpGet]
+        [HttpGet("sortear")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<Bilhete> Sortear()
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult<Bilhete> SortearBilhete()
         {
+            Bilhete? BilheteSorteado = sortearBilheteService.SorteioBilhete();
 
+            if (BilheteSorteado == null)
+            {
+                BadRequest();
+            }
 
-
-
-
-            return Ok();
+            return Ok(BilheteSorteado);
         }
 
         [HttpPut]
@@ -65,9 +77,20 @@ namespace RifaFacilWebApi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<Bilhete> AtualizarBilhete(Bilhete bilhete)
         {
-                
+            if (!ModelState.IsValid)
+            {
+                var erros = ModelState.Values.SelectMany(x => x.Errors).Select(erros => erros.ErrorMessage).SingleOrDefault();
+                return BadRequest(erros);
+            }
 
-            return Ok();
+            ServiceResult serviceResult = atualizarBilheteService.AtualizarBilhete(bilhete);
+
+            if (!serviceResult.Success)
+            {
+                BadRequest(serviceResult.Erros);
+            }
+
+            return Ok(serviceResult);
         }
 
 

@@ -44,6 +44,20 @@ namespace BibliotecaData.Data
             return bilhete;
         }
 
+        public List<Bilhete> ListaDeBilhetes()
+        {
+            List<Bilhete> listaBilhetes = new List<Bilhete>();
+
+            var listaDoBanco = appDbContext.Bilhetes;
+
+            foreach (var bilhete in listaDoBanco)
+            {
+                listaBilhetes.Add(bilhete);
+            }
+
+            return listaBilhetes;
+        }     
+
         public void ExcluirBilhete(Bilhete bilhete)
         {
             appDbContext.Bilhetes.Remove(bilhete);
