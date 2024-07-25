@@ -14,14 +14,17 @@ namespace RifaFacilWebApi.Controllers
         private readonly ConsultarBilheteService consultarBilheteService;
         private readonly SortearBilheteService sortearBilheteService;
         private readonly AtualizarBilheteService atualizarBilheteService;   
+        private readonly ExcluirBilheteService excluirBilheteService;
 
         public BilheteDaRifaController(ConsultarBilheteService consultarBilhete, 
                                        SortearBilheteService sortearBilheteService, 
-                                       AtualizarBilheteService atualizarBilheteService) 
+                                       AtualizarBilheteService atualizarBilheteService,
+                                       ExcluirBilheteService excluirBilheteService) 
         { 
             this.consultarBilheteService = consultarBilhete;
             this.sortearBilheteService = sortearBilheteService;
             this.atualizarBilheteService = atualizarBilheteService;
+            this.excluirBilheteService = excluirBilheteService;
         }
         // COMPRAR BILHETE
         [HttpPost]
@@ -96,13 +99,23 @@ namespace RifaFacilWebApi.Controllers
 
         [HttpDelete]
         [ProducesResponseType(typeof(Bilhete), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<Bilhete> DeletarBilhete(Bilhete bilhete)
         {
-           
-            
+            if (!ModelState.IsValid) // Verifica se os dados recebidos pela solicitação HTTP são validos
+            {
+                var erros = ModelState.Values.SelectMany(x => x.Errors).Select(erros => erros.ErrorMessage).SingleOrDefault();
+                return BadRequest(erros);
+            }
 
-            return Ok();
+            ServiceResult bilheteExcluido = excluirBilheteService.ExcluirBilhete(bilhete);
+
+            if (!bilheteExcluido.Success)
+            {
+                return BadRequest(bilheteExcluido.Erros);
+            }
+
+            return Ok(bilheteExcluido);
         }
     }
     
