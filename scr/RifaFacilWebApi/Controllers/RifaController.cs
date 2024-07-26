@@ -11,10 +11,16 @@ namespace RifaFacilWebApi.Controllers
     public class RifaController : ControllerBase
     {
         private readonly CadastrarRifaService cadastrarRifaServices;
+        private readonly ConsultarRifaService consultarRifaService;
+        private readonly AtualizarRifaService atualizarRifaService;
 
-        public RifaController(CadastrarRifaService cadastrarRifaServices)
+        public RifaController(CadastrarRifaService cadastrarRifaServices,
+                              ConsultarRifaService consultarRifaService,
+                              AtualizarRifaService atualizarRifaService)
         {
             this.cadastrarRifaServices = cadastrarRifaServices;
+            this.consultarRifaService = consultarRifaService;
+            this.atualizarRifaService = atualizarRifaService;
         }
 
         [HttpPost]
@@ -38,20 +44,25 @@ namespace RifaFacilWebApi.Controllers
             return CreatedAtAction(nameof(CadastrarRifa), rifa);
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         [ProducesResponseType(typeof(Rifa), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<Rifa> ObterRifa()
+        public ActionResult<Rifa> ConsultarRifa(long id)
         {
+            Rifa? rifa = consultarRifaService.ConsultarRifa(id);
 
+            if (rifa == null)
+            {
+                return BadRequest();
+            }
 
-            return new Rifa();
+            return Ok(rifa);
         }
 
         [HttpPut]
         [ProducesResponseType(typeof(Rifa), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<Rifa> AtualizarRifa()
+        public ActionResult<ServiceResult> AtualizarRifa(Rifa rifa)
         {
             if (!ModelState.IsValid)
             {
@@ -59,8 +70,14 @@ namespace RifaFacilWebApi.Controllers
                 return BadRequest(erros);
             }
 
+            ServiceResult serviceResult = atualizarRifaService.AtualizarRifa(rifa);
 
-            return new Rifa();
+            if (!serviceResult.Success)
+            {
+                return BadRequest(serviceResult.Erros);
+            }
+
+            return Ok(serviceResult);
         }
 
         [HttpDelete]

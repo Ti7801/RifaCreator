@@ -3,22 +3,22 @@ using BibliotecaBusiness.Models;
 
 namespace BibliotecaBusiness.Services
 {
-    public class AtualizarBilheteService
+    public class AtualizarRifaService
     {
-        private readonly IBilheteRepository bilheteRepository;
+        private readonly IRifaRepository rifaRepository;
 
-        public AtualizarBilheteService(IBilheteRepository bilheteRepository)
+        public AtualizarRifaService(IRifaRepository rifaRepository) 
         {
-            this.bilheteRepository = bilheteRepository;
+            this.rifaRepository = rifaRepository;   
         }
 
-        public ServiceResult AtualizarBilhete(Bilhete bilhete)
+        public ServiceResult AtualizarRifa(Rifa rifa)
         {
             ServiceResult serviceResult = new ServiceResult();
 
             try
             {
-                bilheteRepository.AtualizaBilhete(bilhete);
+                rifaRepository.AtualizarRifa(rifa);
                 serviceResult.Success = true;
             }
             catch (Exception e) 
