@@ -78,7 +78,7 @@ namespace RifaFacilWebApi.Controllers
         [HttpPut]
         [ProducesResponseType(typeof(Bilhete), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<ServiceResult> AtualizarBilhete(Bilhete bilhete)
+        public ActionResult<Bilhete> AtualizarBilhete(Bilhete bilhete)
         {
             if (!ModelState.IsValid)
             {
@@ -90,10 +90,10 @@ namespace RifaFacilWebApi.Controllers
 
             if (!serviceResult.Success)
             {
-                BadRequest(serviceResult.Erros);
+                return BadRequest(serviceResult.Erros);
             }
 
-            return Ok(serviceResult);
+            return Ok(bilhete);
         }
 
 

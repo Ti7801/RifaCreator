@@ -13,14 +13,17 @@ namespace RifaFacilWebApi.Controllers
         private readonly CadastrarRifaService cadastrarRifaServices;
         private readonly ConsultarRifaService consultarRifaService;
         private readonly AtualizarRifaService atualizarRifaService;
+        private readonly ExcluirRifaService excluirRifaService;
 
         public RifaController(CadastrarRifaService cadastrarRifaServices,
                               ConsultarRifaService consultarRifaService,
-                              AtualizarRifaService atualizarRifaService)
+                              AtualizarRifaService atualizarRifaService,
+                              ExcluirRifaService excluirRifaService)
         {
             this.cadastrarRifaServices = cadastrarRifaServices;
             this.consultarRifaService = consultarRifaService;
             this.atualizarRifaService = atualizarRifaService;
+            this.excluirRifaService = excluirRifaService;   
         }
 
         [HttpPost]
@@ -62,7 +65,7 @@ namespace RifaFacilWebApi.Controllers
         [HttpPut]
         [ProducesResponseType(typeof(Rifa), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<ServiceResult> AtualizarRifa(Rifa rifa)
+        public ActionResult<Rifa> AtualizarRifa(Rifa rifa)
         {
             if (!ModelState.IsValid)
             {
@@ -77,17 +80,29 @@ namespace RifaFacilWebApi.Controllers
                 return BadRequest(serviceResult.Erros);
             }
 
-            return Ok(serviceResult);
+            return Ok(rifa);
         }
 
         [HttpDelete]
         [ProducesResponseType(typeof(Rifa), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<Rifa> ExcluirRifa()
+        public ActionResult<Rifa> ExcluirRifa(Rifa rifa)
         {
+            if (!ModelState.IsValid)
+            {
+                var erros = ModelState.Values.SelectMany(x => x.Errors).Select(erros => erros.ErrorMessage).SingleOrDefault();
 
+                return BadRequest(erros);
+            }
 
-            return new Rifa();
+            ServiceResult serviceResult = excluirRifaService.ExcluirRifa(rifa);
+
+            if (!serviceResult.Success)
+            {
+                return BadRequest(serviceResult.Erros);
+            }
+
+            return Ok(rifa);
         }
 
 
