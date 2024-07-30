@@ -104,7 +104,5 @@ namespace RifaFacilWebApi.Controllers
 
             return Ok(rifa);
         }
-
-
     }
 }

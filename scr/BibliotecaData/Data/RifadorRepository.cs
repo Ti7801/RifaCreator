@@ -22,7 +22,13 @@ namespace BibliotecaData.Data
 
         public void AtualizarRifador(Rifador rifador)
         {
-            Rifador rifadorPesquisado = ObterRifador(rifador.Id);
+            Rifador? rifadorPesquisado = ObterRifador(rifador.Id);
+
+            if (rifadorPesquisado == null)
+            {
+                const string message = "A identificação do rifador não foi encontrada";
+                throw new RifadorNaoEncontradoException(message);
+            }
 
             rifadorPesquisado.Nome = rifador.Nome;
             rifadorPesquisado.Email = rifador.Email;
@@ -33,15 +39,9 @@ namespace BibliotecaData.Data
             appDbContext.SaveChanges();
         }
 
-        public Rifador ObterRifador(long id)
+        public Rifador? ObterRifador(long id)
         {
             Rifador? rifadorRetorno = appDbContext.Rifadores.Where(rifador => rifador.Id == id).SingleOrDefault();
-
-            if (rifadorRetorno == null)
-            {
-                const string message = "A identificação do rifador não foi encontrada";
-                throw new RifadorNaoEncontradoException(message);
-            }
 
             return rifadorRetorno;
         }

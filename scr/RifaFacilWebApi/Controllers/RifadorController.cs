@@ -1,4 +1,5 @@
 ﻿using BibliotecaBusiness.Models;
+using BibliotecaBusiness.Services;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,16 +9,20 @@ namespace RifaFacilWebApi.Controllers
     [Route("rifador")]
     public class RifadorController : ControllerBase
     {
+        private readonly CadastrarRifadorService cadastrarRifadorService;  
+        private readonly ConsultarRifadorService consultarRifadorService;
 
-
-
-        public RifadorController() { }  
-
+        public RifadorController(CadastrarRifadorService cadastrarRifadorService,
+                                 ConsultarRifadorService consultarRifadorService) 
+        { 
+            this.cadastrarRifadorService = cadastrarRifadorService;
+            this.consultarRifadorService = consultarRifadorService;
+        }  
 
         [HttpPost]
         [ProducesResponseType(typeof(Rifador), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<Rifador> AdicionarRifador()
+        public ActionResult<Rifador> AdicionarRifador(Rifador rifador)
         {
             if (!ModelState.IsValid)
             {
@@ -25,17 +30,29 @@ namespace RifaFacilWebApi.Controllers
                 return BadRequest(erros);
             }
 
+            ServiceResult serviceResult = cadastrarRifadorService.CadastrarRifador(rifador);
 
-            return CreatedAtAction();
+            if (!serviceResult.Success)
+            {
+                return BadRequest(serviceResult.Erros);
+            }
+
+            return CreatedAtAction(nameof(AdicionarRifador), rifador);
         }
 
-        [HttpGet]
-        [ProducesResponseType(typeof(Rifador), StatusCodes.Status201Created)]
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(Rifador), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<Rifador> ObterRifador() 
+        public ActionResult<Rifador> ObterRifador(long id) 
         {
+            Rifador? rifador = consultarRifadorService.ConsultarRifador(id);
 
-            return new Rifador();
+            if (rifador == null)
+            {
+                return BadRequest();
+            }
+
+            return Ok(rifador);
         }
 
         [HttpPut]
