@@ -11,12 +11,18 @@ namespace RifaFacilWebApi.Controllers
     {
         private readonly CadastrarRifadorService cadastrarRifadorService;  
         private readonly ConsultarRifadorService consultarRifadorService;
+        private readonly AtualizarRifadorService atualizarRifadorService;
+        private readonly ExcluirRifadorService excluirRifadorService;
 
         public RifadorController(CadastrarRifadorService cadastrarRifadorService,
-                                 ConsultarRifadorService consultarRifadorService) 
+                                 ConsultarRifadorService consultarRifadorService,
+                                 AtualizarRifadorService atualizarRifadorService,
+                                 ExcluirRifadorService excluirRifadorService) 
         { 
             this.cadastrarRifadorService = cadastrarRifadorService;
             this.consultarRifadorService = consultarRifadorService;
+            this.atualizarRifadorService = atualizarRifadorService;
+            this.excluirRifadorService = excluirRifadorService;
         }  
 
         [HttpPost]
@@ -56,24 +62,46 @@ namespace RifaFacilWebApi.Controllers
         }
 
         [HttpPut]
-        [ProducesResponseType(typeof(Rifador), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(Rifador), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<Rifador> AtualizarRifador()
+        public ActionResult<Rifador> AtualizarRifador(Rifador rifador)
         {
+            if (!ModelState.IsValid)
+            {
+                var erros = ModelState.Values.SelectMany(x => x.Errors).Select(erros => erros.ErrorMessage).SingleOrDefault();
+                return BadRequest(erros);   
+            }
 
+            ServiceResult serviceResult = atualizarRifadorService.AtualizarRifador(rifador);
 
-            return new Rifador();
+            if (!serviceResult.Success)
+            {
+                return BadRequest(serviceResult.Erros);
+            }
+
+            return Ok(rifador);
         }
 
         [HttpDelete]
-        [ProducesResponseType(typeof(Rifador), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(Rifador), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<Rifador> ExcluirRifador()
+        public ActionResult<Rifador> ExcluirRifador(Rifador rifador)
         {
+            if (!ModelState.IsValid)
+            {
+                var erros = ModelState.Values.SelectMany(x => x.Errors).Select(erros => erros.ErrorMessage).SingleOrDefault();
 
+                return BadRequest(erros);
+            }
 
-            return new Rifador();
+            ServiceResult serviceResult = excluirRifadorService.ExcluirRifador(rifador);
+
+            if (!serviceResult.Success)
+            {
+                return BadRequest(serviceResult.Erros);
+            }
+
+            return Ok(rifador);
         }
-
     }
 }
