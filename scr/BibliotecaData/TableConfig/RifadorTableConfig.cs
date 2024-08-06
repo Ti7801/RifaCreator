@@ -31,7 +31,8 @@ namespace BibliotecaData.TableConfig
 
             builder.HasMany<Rifa>()
                .WithOne()
-               .HasForeignKey(rifa => rifa.RifadorId);
+               .HasForeignKey(rifa => rifa.RifadorId)
+               .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

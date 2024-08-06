@@ -8,25 +8,28 @@ using BibliotecaBusiness.Abstractions;
 namespace RifaFacilWebApi.Controllers
 {
     [ApiController]
-    [Route("controller")]
+    [Route("bilhete")]
     public class BilheteDaRifaController : ControllerBase
     {
+        private readonly ComprarBilheteService comprarBilheteService;   
         private readonly ConsultarBilheteService consultarBilheteService;
         private readonly SortearBilheteService sortearBilheteService;
         private readonly AtualizarBilheteService atualizarBilheteService;   
         private readonly ExcluirBilheteService excluirBilheteService;
 
-        public BilheteDaRifaController(ConsultarBilheteService consultarBilhete, 
+        public BilheteDaRifaController(ComprarBilheteService comprarBilheteService,
+                                       ConsultarBilheteService consultarBilhete, 
                                        SortearBilheteService sortearBilheteService, 
                                        AtualizarBilheteService atualizarBilheteService,
                                        ExcluirBilheteService excluirBilheteService) 
-        { 
+        {
+            this.comprarBilheteService = comprarBilheteService;
             this.consultarBilheteService = consultarBilhete;
             this.sortearBilheteService = sortearBilheteService;
             this.atualizarBilheteService = atualizarBilheteService;
-            this.excluirBilheteService = excluirBilheteService;
+            this.excluirBilheteService = excluirBilheteService;            
         }
-        // COMPRAR BILHETE
+       
         [HttpPost]
         [ProducesResponseType(typeof(Bilhete), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -39,15 +42,19 @@ namespace RifaFacilWebApi.Controllers
                 return BadRequest(erros);
             }
 
+            ServiceResult serviceResult = comprarBilheteService.ComprarBilhete(bilhete);
+
+            if (!serviceResult.Success)
+            {
+                return BadRequest(serviceResult.Erros);
+            }
 
             return CreatedAtAction(actionName: nameof(CriarBilhete), bilhete);
         }
-
-
+        
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(Bilhete), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-
         public ActionResult<Bilhete> ObterBilhete(long id)
         {
             Bilhete? bilhete = consultarBilheteService.ConsultarBilhete(id);
@@ -62,14 +69,14 @@ namespace RifaFacilWebApi.Controllers
 
         [HttpGet("sortear")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult<Bilhete> SortearBilhete()
         {
             Bilhete? BilheteSorteado = sortearBilheteService.SorteioBilhete();
 
             if (BilheteSorteado == null)
             {
-                BadRequest();
+                return Problem(detail:"Ocorreu um erro no sorteio da rifa, tente novamente", statusCode:StatusCodes.Status500InternalServerError,title:"Error no sorteio da rifa!");
             }
 
             return Ok(BilheteSorteado);
@@ -96,7 +103,6 @@ namespace RifaFacilWebApi.Controllers
             return Ok(bilhete);
         }
 
-
         [HttpDelete]
         [ProducesResponseType(typeof(Bilhete), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -108,14 +114,14 @@ namespace RifaFacilWebApi.Controllers
                 return BadRequest(erros);
             }
 
-            ServiceResult bilheteExcluido = excluirBilheteService.ExcluirBilhete(bilhete);
+            ServiceResult serviceResult = excluirBilheteService.ExcluirBilhete(bilhete);
 
-            if (!bilheteExcluido.Success)
+            if (!serviceResult.Success)
             {
-                return BadRequest(bilheteExcluido.Erros);
+                return BadRequest(serviceResult.Erros);
             }
 
-            return Ok(bilheteExcluido);
+            return Ok(bilhete);
         }
     }
     

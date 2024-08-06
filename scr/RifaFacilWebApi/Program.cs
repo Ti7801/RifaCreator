@@ -1,3 +1,5 @@
+using BibliotecaBusiness.Abstractions;
+using BibliotecaBusiness.Services;
 using BibliotecaData.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +15,26 @@ builder.Services.AddDbContext<AppDbContext>(
     },
     ServiceLifetime.Scoped
 );
+
+builder.Services.AddScoped<IRifaRepository, RifaRepository>();
+builder.Services.AddScoped<CadastrarRifaService>();
+builder.Services.AddScoped<ConsultarRifaService>();
+builder.Services.AddScoped<AtualizarRifaService>();
+builder.Services.AddScoped<ExcluirRifaService>();
+
+builder.Services.AddScoped<IBilheteRepository, BilheteRepository>();
+builder.Services.AddScoped<ComprarBilheteService>();
+builder.Services.AddScoped<ConsultarBilheteService>();
+builder.Services.AddScoped<AtualizarBilheteService>();
+builder.Services.AddScoped<ExcluirBilheteService>();
+builder.Services.AddScoped<SortearBilheteService>();
+
+builder.Services.AddScoped<IRifadorRepository, RifadorRepository>();
+builder.Services.AddScoped<CadastrarRifadorService>();
+builder.Services.AddScoped<ConsultarRifadorService>();
+builder.Services.AddScoped<AtualizarRifadorService>();
+builder.Services.AddScoped<ExcluirRifadorService>();
+
 
 
 builder.Services.AddControllers();

@@ -33,7 +33,7 @@ namespace BibliotecaData.Data
             bilhetePesquisado.Telefone = bilhete.Telefone;
             bilhetePesquisado.Email = bilhete.Email;
 
-            appDbContext.Bilhetes.Update(bilhete);
+            appDbContext.Bilhetes.Update(bilhetePesquisado);
             appDbContext.SaveChanges();
         }
 

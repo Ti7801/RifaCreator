@@ -49,14 +49,14 @@ namespace RifaFacilWebApi.Controllers
 
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(Rifa), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<Rifa> ConsultarRifa(long id)
         {
             Rifa? rifa = consultarRifaService.ConsultarRifa(id);
 
             if (rifa == null)
             {
-                return BadRequest();
+                return NotFound();
             }
 
             return Ok(rifa);

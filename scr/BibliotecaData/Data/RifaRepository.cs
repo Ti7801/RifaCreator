@@ -30,6 +30,9 @@ namespace BibliotecaData.Data
                 throw new RifadorNaoEncontradoException(message);
             }
 
+            rifaPesquisada.Premio = rifa.Premio;
+            rifaPesquisada.DataSorteio = rifa.DataSorteio;
+            rifaPesquisada.ValorBilhete = rifa.ValorBilhete;
             rifaPesquisada.Status = rifa.Status;
 
             appDbContext.Rifas.Update(rifaPesquisada);
