@@ -1,0 +1,13 @@
+﻿@model Bilhete
+
+
+<h2>Criar Bilhete</h2>
+
+<form asp-action="CriarBilhete" method="post">
+    <div>
+        <label asp-for="Nome"></label>
+        <input asp-for="Nome"/>
+        <span asp-validation-for="Nome"></span>
+    </div>
+
+</form>
