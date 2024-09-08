@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BibliotecaData.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240802130915_Initial")]
+    [Migration("20240908142508_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,37 @@ namespace BibliotecaData.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("BibliotecaBusiness.Models.Afiliado", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<long>("RifaId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Telefone")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Afiliado", (string)null);
+                });
+
             modelBuilder.Entity("BibliotecaBusiness.Models.Bilhete", b =>
                 {
                     b.Property<long>("Id")
@@ -31,6 +62,9 @@ namespace BibliotecaData.Migrations
                         .HasColumnType("bigint");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<long?>("AfiliadoId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -52,6 +86,8 @@ namespace BibliotecaData.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AfiliadoId");
+
                     b.HasIndex("RifaId");
 
                     b.ToTable("Bilhete", (string)null);
@@ -72,7 +108,7 @@ namespace BibliotecaData.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("RifadorId")
+                    b.Property<long?>("RifadorId")
                         .HasColumnType("bigint");
 
                     b.Property<int>("Status")
@@ -124,6 +160,11 @@ namespace BibliotecaData.Migrations
 
             modelBuilder.Entity("BibliotecaBusiness.Models.Bilhete", b =>
                 {
+                    b.HasOne("BibliotecaBusiness.Models.Afiliado", null)
+                        .WithMany()
+                        .HasForeignKey("AfiliadoId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("BibliotecaBusiness.Models.Rifa", null)
                         .WithMany()
                         .HasForeignKey("RifaId")
@@ -136,8 +177,7 @@ namespace BibliotecaData.Migrations
                     b.HasOne("BibliotecaBusiness.Models.Rifador", null)
                         .WithMany()
                         .HasForeignKey("RifadorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
                 });
 #pragma warning restore 612, 618
         }

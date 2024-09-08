@@ -14,6 +14,7 @@ namespace BibliotecaBusiness.Models
         public string? Email { get; set; }
         [Required]
         public long  RifaId { get; set; }
-
+        [Required]
+        public long? AfiliadoId { get; set; }
     }
 }

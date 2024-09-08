@@ -10,6 +10,22 @@ namespace BibliotecaData.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Afiliado",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nome = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Telefone = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    RifaId = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Afiliado", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Rifador",
                 columns: table => new
                 {
@@ -35,7 +51,7 @@ namespace BibliotecaData.Migrations
                     DataSorteio = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ValorBilhete = table.Column<float>(type: "real", nullable: false),
                     Status = table.Column<int>(type: "int", maxLength: 20, nullable: false),
-                    RifadorId = table.Column<long>(type: "bigint", nullable: false)
+                    RifadorId = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -45,7 +61,7 @@ namespace BibliotecaData.Migrations
                         column: x => x.RifadorId,
                         principalTable: "Rifador",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -57,11 +73,18 @@ namespace BibliotecaData.Migrations
                     Nome = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     Telefone = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    RifaId = table.Column<long>(type: "bigint", nullable: false)
+                    RifaId = table.Column<long>(type: "bigint", nullable: false),
+                    AfiliadoId = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Bilhete", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Bilhete_Afiliado_AfiliadoId",
+                        column: x => x.AfiliadoId,
+                        principalTable: "Afiliado",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
                         name: "FK_Bilhete_Rifa_RifaId",
                         column: x => x.RifaId,
@@ -69,6 +92,11 @@ namespace BibliotecaData.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Bilhete_AfiliadoId",
+                table: "Bilhete",
+                column: "AfiliadoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Bilhete_RifaId",
@@ -85,6 +113,9 @@ namespace BibliotecaData.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Bilhete");
+
+            migrationBuilder.DropTable(
+                name: "Afiliado");
 
             migrationBuilder.DropTable(
                 name: "Rifa");

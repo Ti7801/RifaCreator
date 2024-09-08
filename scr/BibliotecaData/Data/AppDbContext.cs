@@ -12,6 +12,8 @@ namespace BibliotecaData.Data
 
         public DbSet<Rifador> Rifadores { get; set; }
 
+        public DbSet<Afiliado> Afiliados { get; set; }
+
         public AppDbContext(DbContextOptions options) : base (options) { }
 
         /// pra que serve mesmo? Reconhecer todo o assembly?

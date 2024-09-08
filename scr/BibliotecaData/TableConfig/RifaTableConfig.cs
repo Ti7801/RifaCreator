@@ -18,7 +18,7 @@ namespace BibliotecaData.TableConfig
                 .HasMaxLength(20);
 
             builder.Property(rifa => rifa.RifadorId)
-            .IsRequired();
+            .IsRequired(false); // Permite Valores Nulos
 
             builder.HasMany<Bilhete>()
                 .WithOne()

@@ -20,6 +20,6 @@ namespace BibliotecaBusiness.Models
         public Status Status { get; set; }
 
         [Required]
-        public long RifadorId { get; set; }
+        public long? RifadorId { get; set; }
     }
 }
