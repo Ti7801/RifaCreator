@@ -25,9 +25,9 @@ A ideia principal do projeto é construir uma API de uma Rifa que receba requisi
  - Status: string
 
 ### Entidade Afiliado
- - Nome
- - Email
- - Telefone
+ - Nome: string
+ - Email: string
+ - Telefone: string
 
 
 ### Serviços
