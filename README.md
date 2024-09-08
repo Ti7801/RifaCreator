@@ -19,18 +19,33 @@ A ideia principal do projeto é construir uma API de uma Rifa que receba requisi
  - Senha: string
 
 ### Entidade Rifa
+ - Premio: string
+ - DataSorteio: DateTime
+ - ValorBilhete: float
  - Status: string
+
+### Entidade Afiliado
+ - Nome
+ - Email
+ - Telefone
+
 
 ### Serviços
 - Atualizar Bilhete
+- Atualizar Rifador
+- Atualizar Rifa
+- Cadastrar Afiliado
 - Cadastrar Rifa
-- Comprar Bilhete
 - Consultar Bilhete
+- Comprar Bilhete
+- Consultar Rifador
+- Consultar Rifa
 - Criar Conta
 - Excluir Bilhete
+- Excluir Rifador
+- Excluir Rifa
 - Sortear Bilhete
-- Visualizar Status da Rifa
-
+- Vender Bilhete
 
 ### Comandos para criação do arquivo de migração e conexão com o Banco de Dados (Entity Framework)
 
