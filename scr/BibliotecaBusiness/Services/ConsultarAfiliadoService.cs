@@ -12,22 +12,19 @@ namespace BibliotecaBusiness.Services
             this.afiliadoRepository = afiliadoRepository;   
         }
 
-        public ServiceResult ConsultarAfiliado(Afiliado afiliado)
+        public List<Afiliado> ConsultarAfiliado()
         {
-            ServiceResult serviceResult = new ServiceResult();
-
             try
             {
-                serviceResult.Success = true;
-                afiliadoRepository.AtualizarAfiliado(afiliado);
-            }
-            catch (Exception e) 
-            {
-                serviceResult.Success= false;   
-                serviceResult.Erros.Add(e.Message); 
-            }
+               List<Afiliado> afiliados =  afiliadoRepository.ObterAfiliados();
 
-            return serviceResult;
+                return afiliados;
+            }
+            catch 
+            {
+                return null;
+         
+            }
         }
     }
 }

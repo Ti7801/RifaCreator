@@ -9,18 +9,18 @@ namespace RifaFacilWebApi.Controllers
     public class AfiliadoController : ControllerBase
     {
         private readonly CadastrarAfiliadoService cadastrarAfiliadoService;
-        //private readonly ConsultarAfiliadoService consultarAfiliadoService;
+        private readonly ConsultarAfiliadoService consultarAfiliadoService;
         //private readonly AtualizarAfiliadoService atualizarAfiliadoService; 
         //private readonly ExcluirAfiliadoService excluirAfiliadoService; 
 
-        public AfiliadoController(CadastrarAfiliadoService cadastrarAfiliadoService//,
-                                 //ConsultarAfiliadoService consultarAfiliadoService,
+        public AfiliadoController(CadastrarAfiliadoService cadastrarAfiliadoService,
+                                 ConsultarAfiliadoService consultarAfiliadoService//,
                                  //AtualizarAfiliadoService atualizarAfiliadoService,
                                  //ExcluirAfiliadoService excluirAfiliadoService
                                  )
         {
             this.cadastrarAfiliadoService = cadastrarAfiliadoService;
-            //this.consultarAfiliadoService = consultarAfiliadoService;
+            this.consultarAfiliadoService = consultarAfiliadoService;
             //this.atualizarAfiliadoService = atualizarAfiliadoService;
             //this.excluirAfiliadoService = excluirAfiliadoService;
         }
@@ -45,9 +45,23 @@ namespace RifaFacilWebApi.Controllers
                 return BadRequest(serviceResult.Erros);
             }
 
-
             return CreatedAtAction(nameof(CadastrarAfiliado), afiliado);
         }
-      
+
+        [HttpGet]
+        [ProducesResponseType(typeof(List<Afiliado>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<List<Afiliado>> ListarAfiliados()
+        {
+            List<Afiliado>? afiliado = consultarAfiliadoService.ConsultarAfiliado();
+
+            if (afiliado == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(afiliado);
+        }
+
     }
 }
