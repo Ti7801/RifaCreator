@@ -10,17 +10,20 @@ namespace RifaFacilWebApi.Controllers
     {
         private readonly CadastrarAfiliadoService cadastrarAfiliadoService;
         private readonly ConsultarAfiliadoService consultarAfiliadoService;
+        private readonly ConsultarAfiliadoPorIdService consultarAfiliadoPorIdService;
         private readonly AtualizarAfiliadoService atualizarAfiliadoService; 
-        private readonly ExcluirAfiliadoService excluirAfiliadoService; 
-
+        private readonly ExcluirAfiliadoService excluirAfiliadoService;
+        
         public AfiliadoController(CadastrarAfiliadoService cadastrarAfiliadoService,
                                  ConsultarAfiliadoService consultarAfiliadoService,
+                                 ConsultarAfiliadoPorIdService consultarAfiliadoPorIdService,
                                  AtualizarAfiliadoService atualizarAfiliadoService,
                                  ExcluirAfiliadoService excluirAfiliadoService
                                  )
         {
             this.cadastrarAfiliadoService = cadastrarAfiliadoService;
             this.consultarAfiliadoService = consultarAfiliadoService;
+            this.consultarAfiliadoPorIdService = consultarAfiliadoPorIdService;
             this.atualizarAfiliadoService = atualizarAfiliadoService;
             this.excluirAfiliadoService = excluirAfiliadoService;
         }
@@ -61,6 +64,22 @@ namespace RifaFacilWebApi.Controllers
             }
 
             return Ok(afiliado);
+        }
+
+        [HttpGet("{id:long}")]
+        [ProducesResponseType(typeof(Afiliado), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<Afiliado> ConsultarAfiliadoPorId(long id) 
+        {
+            Afiliado? afiliado = consultarAfiliadoPorIdService.ConsultarAfiliadoPorId(id);
+
+            if (afiliado == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(afiliado);
+
         }
 
         [HttpPut]
