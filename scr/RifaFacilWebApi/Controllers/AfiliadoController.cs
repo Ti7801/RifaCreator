@@ -11,18 +11,18 @@ namespace RifaFacilWebApi.Controllers
         private readonly CadastrarAfiliadoService cadastrarAfiliadoService;
         private readonly ConsultarAfiliadoService consultarAfiliadoService;
         private readonly AtualizarAfiliadoService atualizarAfiliadoService; 
-        //private readonly ExcluirAfiliadoService excluirAfiliadoService; 
+        private readonly ExcluirAfiliadoService excluirAfiliadoService; 
 
         public AfiliadoController(CadastrarAfiliadoService cadastrarAfiliadoService,
                                  ConsultarAfiliadoService consultarAfiliadoService,
-                                 AtualizarAfiliadoService atualizarAfiliadoService//,
-                                 //ExcluirAfiliadoService excluirAfiliadoService
+                                 AtualizarAfiliadoService atualizarAfiliadoService,
+                                 ExcluirAfiliadoService excluirAfiliadoService
                                  )
         {
             this.cadastrarAfiliadoService = cadastrarAfiliadoService;
             this.consultarAfiliadoService = consultarAfiliadoService;
             this.atualizarAfiliadoService = atualizarAfiliadoService;
-            //this.excluirAfiliadoService = excluirAfiliadoService;
+            this.excluirAfiliadoService = excluirAfiliadoService;
         }
 
 
@@ -78,6 +78,29 @@ namespace RifaFacilWebApi.Controllers
             ServiceResult serviceResult = atualizarAfiliadoService.AtualizarAfiliado(afiliado);
 
             if (!serviceResult.Success)
+            {
+                return BadRequest(serviceResult.Erros);
+            }
+
+            return Ok(afiliado);
+        }
+
+        [HttpDelete]
+        [ProducesResponseType(typeof(Afiliado),StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult<Afiliado> ExcluirAfiliado(Afiliado afiliado)
+        {
+            if (!ModelState.IsValid)
+            {
+                var erros = ModelState.Values.SelectMany(x => x.Errors).Select(erros
+                     => erros.ErrorMessage).SingleOrDefault();
+
+                return BadRequest(erros);
+            }
+
+            ServiceResult serviceResult = excluirAfiliadoService.ExcluirAfiliado(afiliado);
+
+            if(!serviceResult.Success) 
             {
                 return BadRequest(serviceResult.Erros);
             }

@@ -12,7 +12,7 @@ namespace BibliotecaBusiness.Services
             this.afiliadoRepository = afiliadoRepository;   
         }
 
-        public List<Afiliado> ConsultarAfiliado()
+        public List<Afiliado>? ConsultarAfiliado()
         {
             try
             {
