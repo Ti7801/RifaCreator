@@ -35,6 +35,12 @@ builder.Services.AddScoped<ConsultarRifadorService>();
 builder.Services.AddScoped<AtualizarRifadorService>();
 builder.Services.AddScoped<ExcluirRifadorService>();
 
+builder.Services.AddScoped<IAfiliadoRepository, AfiliadoRepository>();
+builder.Services.AddScoped<CadastrarAfiliadoService>();
+builder.Services.AddScoped<ConsultarAfiliadoService>();
+builder.Services.AddScoped<ConsultarAfiliadoPorIdService>();
+builder.Services.AddScoped<AtualizarAfiliadoService>();
+builder.Services.AddScoped<ExcluirAfiliadoService>();
 
 
 builder.Services.AddControllers();
