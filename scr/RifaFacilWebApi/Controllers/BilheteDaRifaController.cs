@@ -11,26 +11,29 @@ namespace RifaFacilWebApi.Controllers
     [Route("bilhete")]
     public class BilheteDaRifaController : ControllerBase
     {
-        private readonly ComprarBilheteService comprarBilheteService;   
+        private readonly ComprarBilheteService comprarBilheteService;
+        private readonly VenderBilheteService venderBilheteService; 
         private readonly ConsultarBilheteService consultarBilheteService;
         private readonly SortearBilheteService sortearBilheteService;
         private readonly AtualizarBilheteService atualizarBilheteService;   
         private readonly ExcluirBilheteService excluirBilheteService;
 
         public BilheteDaRifaController(ComprarBilheteService comprarBilheteService,
+                                       VenderBilheteService venderBilheteService,
                                        ConsultarBilheteService consultarBilhete, 
                                        SortearBilheteService sortearBilheteService, 
                                        AtualizarBilheteService atualizarBilheteService,
                                        ExcluirBilheteService excluirBilheteService) 
         {
             this.comprarBilheteService = comprarBilheteService;
+            this.venderBilheteService = venderBilheteService;
             this.consultarBilheteService = consultarBilhete;
             this.sortearBilheteService = sortearBilheteService;
             this.atualizarBilheteService = atualizarBilheteService;
             this.excluirBilheteService = excluirBilheteService;            
         }
        
-        [HttpPost]
+        [HttpPost("criarbilhete")]
         [ProducesResponseType(typeof(Bilhete), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<Bilhete> CriarBilhete(Bilhete bilhete)
@@ -51,7 +54,29 @@ namespace RifaFacilWebApi.Controllers
 
             return CreatedAtAction(actionName: nameof(CriarBilhete), bilhete);
         }
-        
+
+        [HttpPost("venderbilhete")]
+        [ProducesResponseType(typeof(Bilhete), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult<Bilhete> VenderBilhete(Bilhete bilhete)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                var erros = ModelState.Values.SelectMany(u => u.Errors).Select(erros => erros.ErrorMessage);
+                return BadRequest(erros);
+            }
+
+            ServiceResult serviceResult = venderBilheteService.VenderBilhete(bilhete);
+
+            if (!serviceResult.Success)
+            {
+                return BadRequest(serviceResult.Erros);
+            }
+
+            return CreatedAtAction(actionName: nameof(CriarBilhete), bilhete);
+        }
+
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(Bilhete), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
