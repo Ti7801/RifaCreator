@@ -1,6 +1,7 @@
 using BibliotecaBusiness.Abstractions;
 using BibliotecaBusiness.Services;
 using BibliotecaData.Data;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +16,12 @@ builder.Services.AddDbContext<AppDbContext>(
     },
     ServiceLifetime.Scoped
 );
+
+//Autentication - Uso da Identidade - USUARIO/PERFIL
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<AppDbContext>();
+
 
 builder.Services.AddScoped<IRifaRepository, RifaRepository>();
 builder.Services.AddScoped<CadastrarRifaService>();
@@ -58,6 +65,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
