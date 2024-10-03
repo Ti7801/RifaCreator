@@ -4,9 +4,11 @@ using BibliotecaBusiness.Models;
 using BibliotecaData.Data;
 using BibliotecaBusiness.Services;
 using BibliotecaBusiness.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace RifaFacilWebApi.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("bilhete")]
     public class BilheteDaRifaController : ControllerBase

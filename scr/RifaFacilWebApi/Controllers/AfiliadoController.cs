@@ -1,9 +1,11 @@
 ﻿using BibliotecaBusiness.Models;
 using BibliotecaBusiness.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace RifaFacilWebApi.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("afiliado")]
     public class AfiliadoController : ControllerBase

@@ -1,10 +1,12 @@
 ﻿using BibliotecaBusiness.Models;
 using BibliotecaBusiness.Services;
 using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace RifaFacilWebApi.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("rifador")]
     public class RifadorController : ControllerBase
