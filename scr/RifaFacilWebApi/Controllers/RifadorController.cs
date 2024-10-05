@@ -25,8 +25,8 @@ namespace RifaFacilWebApi.Controllers
             this.consultarRifadorService = consultarRifadorService;
             this.atualizarRifadorService = atualizarRifadorService;
             this.excluirRifadorService = excluirRifadorService;
-        }  
-
+        }
+        [Authorize(Roles = "admin")]
         [HttpPost]
         [ProducesResponseType(typeof(Rifador), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -48,6 +48,7 @@ namespace RifaFacilWebApi.Controllers
             return CreatedAtAction(nameof(AdicionarRifador), rifador);
         }
 
+        [Authorize(Roles = "admin")]
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(Rifador), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -63,6 +64,7 @@ namespace RifaFacilWebApi.Controllers
             return Ok(rifador);
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPut]
         [ProducesResponseType(typeof(Rifador), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -84,6 +86,7 @@ namespace RifaFacilWebApi.Controllers
             return Ok(rifador);
         }
 
+        [Authorize(Roles = "admin")]
         [HttpDelete]
         [ProducesResponseType(typeof(Rifador), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

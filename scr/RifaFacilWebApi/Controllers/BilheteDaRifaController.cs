@@ -34,7 +34,8 @@ namespace RifaFacilWebApi.Controllers
             this.atualizarBilheteService = atualizarBilheteService;
             this.excluirBilheteService = excluirBilheteService;            
         }
-       
+
+        [AllowAnonymous]
         [HttpPost("criarbilhete")]
         [ProducesResponseType(typeof(Bilhete), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -57,6 +58,7 @@ namespace RifaFacilWebApi.Controllers
             return CreatedAtAction(actionName: nameof(CriarBilhete), bilhete);
         }
 
+        [AllowAnonymous]
         [HttpPost("venderbilhete")]
         [ProducesResponseType(typeof(Bilhete), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -79,6 +81,7 @@ namespace RifaFacilWebApi.Controllers
             return CreatedAtAction(actionName: nameof(CriarBilhete), bilhete);
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(Bilhete), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -94,6 +97,7 @@ namespace RifaFacilWebApi.Controllers
             return Ok(bilhete);
         }
 
+        [AllowAnonymous]
         [HttpGet("sortear")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -109,6 +113,7 @@ namespace RifaFacilWebApi.Controllers
             return Ok(BilheteSorteado);
         }
 
+        [AllowAnonymous]
         [HttpPut]
         [ProducesResponseType(typeof(Bilhete), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -130,6 +135,7 @@ namespace RifaFacilWebApi.Controllers
             return Ok(bilhete);
         }
 
+        [AllowAnonymous]
         [HttpDelete]
         [ProducesResponseType(typeof(Bilhete), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

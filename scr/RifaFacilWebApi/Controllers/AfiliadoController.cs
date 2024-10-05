@@ -30,7 +30,7 @@ namespace RifaFacilWebApi.Controllers
             this.excluirAfiliadoService = excluirAfiliadoService;
         }
 
-
+        [Authorize(Roles = "rifador")]
         [HttpPost]
         [ProducesResponseType(typeof(Afiliado), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -53,6 +53,7 @@ namespace RifaFacilWebApi.Controllers
             return CreatedAtAction(nameof(CadastrarAfiliado), afiliado);
         }
 
+        [Authorize(Roles = "rifador")]
         [HttpGet]
         [ProducesResponseType(typeof(List<Afiliado>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -68,6 +69,7 @@ namespace RifaFacilWebApi.Controllers
             return Ok(afiliado);
         }
 
+        [Authorize(Roles = "rifador")]
         [HttpGet("{id:long}")]
         [ProducesResponseType(typeof(Afiliado), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -84,6 +86,7 @@ namespace RifaFacilWebApi.Controllers
 
         }
 
+        [Authorize(Roles = "rifador")]
         [HttpPut]
         [ProducesResponseType(typeof(Afiliado),StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -106,6 +109,7 @@ namespace RifaFacilWebApi.Controllers
             return Ok(afiliado);
         }
 
+        [Authorize(Roles = "rifador")]
         [HttpDelete]
         [ProducesResponseType(typeof(Afiliado),StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

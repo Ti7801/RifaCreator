@@ -28,6 +28,7 @@ namespace RifaFacilWebApi.Controllers
             this.excluirRifaService = excluirRifaService;   
         }
 
+        [Authorize(Roles ="rifador")]
         [HttpPost]
         [ProducesResponseType(typeof(Rifa), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -49,6 +50,7 @@ namespace RifaFacilWebApi.Controllers
             return CreatedAtAction(nameof(CadastrarRifa), rifa);
         }
 
+        [Authorize(Roles = "rifador")]
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(Rifa), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -64,6 +66,7 @@ namespace RifaFacilWebApi.Controllers
             return Ok(rifa);
         }
 
+        [Authorize(Roles = "rifador")]
         [HttpPut]
         [ProducesResponseType(typeof(Rifa), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -85,6 +88,7 @@ namespace RifaFacilWebApi.Controllers
             return Ok(rifa);
         }
 
+        [Authorize(Roles = "rifador")]
         [HttpDelete]
         [ProducesResponseType(typeof(Rifa), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
