@@ -14,22 +14,26 @@ namespace RifaFacilWebApi.Controllers
     [Route("api/conta")]
     public class AuthController : ControllerBase
     {
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;    
         private readonly JwtSettings _jwtSettings;  
 
         public AuthController(SignInManager<IdentityUser> signInManager,
+                             RoleManager<IdentityRole> _roleManager,
                              UserManager<IdentityUser> userManager,
                              IOptions<JwtSettings> jwtSettings)
         {
             this._signInManager = signInManager;   
             this._userManager = userManager;
             this._jwtSettings = jwtSettings.Value;
+            this._roleManager = _roleManager;
         }
+        //REGISTRAR RIFADOR
 
         [Authorize(Roles = "admin")]
-        [HttpPost("registrar")]
-        public async Task<ActionResult> Registrar(RegisterUserViewModel registerUser)
+        [HttpPost("registrarRifador")]
+        public async Task<ActionResult> RegistrarRifador(RegisterUserViewModel registerUser)
         {
             if (!ModelState.IsValid)
             {
@@ -47,8 +51,51 @@ namespace RifaFacilWebApi.Controllers
 
             if (result.Succeeded)
             {
-                await _signInManager.SignInAsync(user, false);
-                return Ok(await GerarJwt(user.Email));
+                //ATRIBUIÇÃO DA ROLE RIFADOR AO USUÁRIO
+                var rolesResult = await _userManager.AddToRoleAsync(user, "rifador");
+
+                if (rolesResult.Succeeded)
+                {
+                    await _signInManager.SignInAsync(user, false);
+                    return Ok(await GerarJwt(user.Email));
+                }
+                return Problem("Falha ao registrar o usuário");
+            }
+
+            return Problem("Falha ao registrar o usuário");
+        }
+
+        //REGISTRAR AFILIADO
+
+        [Authorize(Roles = "admin, rifador")]
+        [HttpPost("registrarAfiliado")]
+        public async Task<ActionResult> RegistrarAfiliado(RegisterUserViewModel registerUser)
+        {
+            if (!ModelState.IsValid)
+            {
+                return ValidationProblem(ModelState);
+            }
+
+            var user = new IdentityUser
+            {
+                UserName = registerUser.Email,
+                Email = registerUser.Email,
+                EmailConfirmed = true
+            };
+
+            var result = await _userManager.CreateAsync(user, registerUser.Password);
+
+            if (result.Succeeded)
+            {
+                //ATRIBUIÇÃO DA ROLE AFILIADO AO USUÁRIO
+                var rolesResult = await _userManager.AddToRoleAsync(user, "afiliado");
+
+                if (rolesResult.Succeeded)
+                {
+                    await _signInManager.SignInAsync(user, false);
+                    return Ok(await GerarJwt(user.Email));
+                }
+                return Problem("Falha ao registrar o usuário");
             }
 
             return Problem("Falha ao registrar o usuário");
