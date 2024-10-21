@@ -11,6 +11,12 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.WebHost.ConfigureKestrel(serverOptions =>{
+
+    serverOptions.ListenAnyIP(5000);// Porta 5000 para HTTP
+    //serverOptions.ListenAnyIP(5001, listenOptions => listenOptions.UseHttps());// Porta 5000 para HTTP
+});
+
 // Add services to the container.
 
 builder.Services.AddDbContext<AppDbContext>(
