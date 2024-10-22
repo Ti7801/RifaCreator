@@ -11,10 +11,11 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.WebHost.ConfigureKestrel(serverOptions =>{
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
 
     serverOptions.ListenAnyIP(5000);// Porta 5000 para HTTP
-    //serverOptions.ListenAnyIP(5001, listenOptions => listenOptions.UseHttps());// Porta 5000 para HTTP
+    //serverOptions.ListenAnyIP(5001, listenOptions => listenOptions.UseHttps());// Porta 5001 para HTTP
 });
 
 // Add services to the container.
@@ -128,18 +129,18 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-//app.UseHttpsRedirection();
+app.UseHttpsRedirection();
 
 app.UseAuthentication();
 
 app.UseAuthorization();
 
-//app.MapControllers();
+app.MapControllers();
 
-app.UseRouting();
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllers();
-});
+//app.UseRouting();
+//app.UseEndpoints(endpoints =>
+//{
+//    endpoints.MapControllers();
+//});
 
 app.Run();

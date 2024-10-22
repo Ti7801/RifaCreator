@@ -10,7 +10,7 @@ namespace RifaFacilWebApi.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("bilhete")]
+    [Route("api/bilhete")]
     public class BilheteDaRifaController : ControllerBase
     {
         private readonly ComprarBilheteService comprarBilheteService;

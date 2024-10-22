@@ -9,7 +9,7 @@ namespace RifaFacilWebApi.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("rifa")]
+    [Route("api/rifa")]
     public class RifaController : ControllerBase
     {
         private readonly CadastrarRifaService cadastrarRifaServices;

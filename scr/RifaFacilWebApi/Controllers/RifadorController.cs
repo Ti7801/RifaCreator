@@ -8,7 +8,7 @@ namespace RifaFacilWebApi.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("rifador")]
+    [Route("api/rifador")]
     public class RifadorController : ControllerBase
     {
         private readonly CadastrarRifadorService cadastrarRifadorService;  

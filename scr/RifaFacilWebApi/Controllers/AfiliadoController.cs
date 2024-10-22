@@ -7,7 +7,7 @@ namespace RifaFacilWebApi.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("afiliado")]
+    [Route("api/afiliado")]
     public class AfiliadoController : ControllerBase
     {
         private readonly CadastrarAfiliadoService cadastrarAfiliadoService;
