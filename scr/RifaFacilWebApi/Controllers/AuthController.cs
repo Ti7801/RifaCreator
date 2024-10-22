@@ -30,8 +30,8 @@ namespace RifaFacilWebApi.Controllers
             this._roleManager = _roleManager;
         }
         //REGISTRAR RIFADOR
-
-        [Authorize(Roles = "admin")]
+        [AllowAnonymous]
+        //[Authorize(Roles = "admin")]
         [HttpPost("registrarRifador")]
         public async Task<ActionResult> RegistrarRifador(RegisterUserViewModel registerUser)
         {
