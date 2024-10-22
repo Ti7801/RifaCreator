@@ -15,7 +15,7 @@ builder.WebHost.ConfigureKestrel(serverOptions =>
 {
 
     serverOptions.ListenAnyIP(5000);// Porta 5000 para HTTP
-    //serverOptions.ListenAnyIP(5001, listenOptions => listenOptions.UseHttps());// Porta 5001 para HTTP
+    serverOptions.ListenAnyIP(5001, listenOptions => listenOptions.UseHttps());// Porta 5001 para HTTP
 });
 
 // Add services to the container.
@@ -123,24 +123,18 @@ builder.Services.AddSwaggerGen(c =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment())
+//{
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+//}
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthentication();
 
 app.UseAuthorization();
 
 app.MapControllers();
-
-//app.UseRouting();
-//app.UseEndpoints(endpoints =>
-//{
-//    endpoints.MapControllers();
-//});
 
 app.Run();
